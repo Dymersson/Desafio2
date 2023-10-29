@@ -1,3 +1,5 @@
+activity_main.xml
+
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -13,3 +15,88 @@
         android:layout_height="match_parent"/>
 
 </LinearLayout>
+
+//
+
+activity_imagem_carro.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="ActivityImagemCarro">
+
+    <ImageView
+        android:id="@+id/imgCarros"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/chevrolet_camaro_2022_1667831294654_v2_900x506"
+</LinearLayout>
+
+//
+
+MainActivity.kt
+
+package com.example.desafio2
+
+import android.app.Activity
+import android.content.Intent
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.ListView
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var lvCarros:ListView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        lvCarros = findViewById(R.id.ListaCarros)
+        val arrayCarros = arrayOf("Camaro, HB20, Veloster")
+        val adapterCarros = ArrayAdapter(this, android.R.layout.simple_list_item_1,arrayCarros)
+        lvCarros.adapter = adapterCarros
+
+        lvCarros.setOnItemClickListener{
+            parent,view,position,id ->
+
+            val intent = Intent(this,ActivityImagemCarro::class.java)
+            intent.putExtra("nomeCarro", arrayCarros[position])
+            startActivity(intent)
+        }
+    }
+}
+
+//
+
+ImagemCarro.kt
+
+package com.example.desafio2
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.widget.ImageView
+
+class ActivityImagemCarro : AppCompatActivity {
+    lateinit var imagemCarro:ImageView
+
+    override fun onCreat(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_imagem_carro)
+        imagemCarro = findViewById(R.id.imgCarros)
+
+        var parametro = intent.getStringExtra("nomeCarro")
+
+        if (parametro == "Camaro") {
+            imagemCarro.setImageResource(R.drawable.Camaro)
+            }else if (parametro == "HB20"){
+            imagemCarro.setImageResource(R.drawable.HB20)
+            }else if (parametro == "Veloster"){
+            imagemCarro.setImageResource(R.drawable.Veloster)
+        }
+    }
+}
